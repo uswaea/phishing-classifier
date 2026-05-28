@@ -58,13 +58,26 @@ if st.button("Classify"):
         features_scaled = scaler.transform(features)
         prediction = model.predict(features_scaled)[0]
         probability = model.predict_proba(features_scaled)[0]
+        confidence = max(probability) * 100
 
         if prediction == 0:
             st.error(f"⚠️ PHISHING — This URL appears to be malicious!")
-            st.write(f"Confidence: {probability[0]*100:.1f}%")
+        elif prediction == 1 and confidence < 75:
+            st.warning(f"⚠️ SUSPICIOUS — This URL looks unusual. Proceed with caution.")
         else:
             st.success(f"✅ LEGITIMATE — This URL appears to be safe.")
-            st.write(f"Confidence: {probability[1]*100:.1f}%")
+        
+        st.write(f"Confidence: {confidence:.1f}%")
+        
+        # Show feature breakdown
+        st.markdown("**URL Analysis:**")
+        col1, col2 = st.columns(2)
+        col1.metric("URL Length", len(url_input))
+        col1.metric("Is HTTPS", "Yes ✅" if url_input.startswith("https") else "No ⚠️")
+        col1.metric("Subdomains", url_input.count('.') - 1)
+        col2.metric("Special Chars", len([c for c in url_input if not c.isalnum()]))
+        col2.metric("Has IP Address", "Yes ⚠️" if re.match(r'.*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*', url_input) else "No ✅")
+        col2.metric("Query Params", url_input.count('&') + url_input.count('?'))
 
 st.markdown("---")
 st.caption("Phishing Link Classifier — COMP360 Final Project | Uswa, Nawal, Tania")
