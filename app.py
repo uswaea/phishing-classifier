@@ -61,16 +61,18 @@ if st.button("Classify"):
         predicted_class = model.predict(features_scaled)[0]
 
         # Override: if HTTPS but other signals are suspicious, downgrade confidence
+        # Override: flag suspicious HTTPS URLs
         is_https = url_input.startswith("https")
         has_hyphen_domain = "-" in urlparse(url_input).netloc
-        high_subdomains = url_input.count(".") > 3
-        many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) > 5
+        high_subdomains = url_input.count(".") >= 3
+        many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) >= 3
+        has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank"])
 
-        suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special])
+        suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special, has_brand_impersonation])
 
-        if predicted_class == 1 and is_https and suspicious_signals >= 2:
-            st.warning("⚠️ SUSPICIOUS — HTTPS but structure looks unusual. Proceed with caution.")
-            confidence = min(confidence, 70)
+        if predicted_class == 1 and suspicious_signals >= 2:
+            st.warning("⚠️ SUSPICIOUS — Structure looks unusual. Proceed with caution.")
+            confidence = min(confidence, 65)
         elif predicted_class == 0:
             st.error("⚠️ PHISHING — This URL appears to be malicious!")
         else:
