@@ -56,28 +56,36 @@ if st.button("Classify"):
     else:
         features = extract_features(url_input)
         features_scaled = scaler.transform(features)
-        prediction = model.predict(features_scaled)[0]
         probability = model.predict_proba(features_scaled)[0]
         confidence = max(probability) * 100
+        predicted_class = model.predict(features_scaled)[0]
 
-        if prediction == 0:
-            st.error(f"⚠️ PHISHING — This URL appears to be malicious!")
-        elif prediction == 1 and confidence < 75:
-            st.warning(f"⚠️ SUSPICIOUS — This URL looks unusual. Proceed with caution.")
+        # Override: if HTTPS but other signals are suspicious, downgrade confidence
+        is_https = url_input.startswith("https")
+        has_hyphen_domain = "-" in urlparse(url_input).netloc
+        high_subdomains = url_input.count(".") > 3
+        many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) > 5
+
+        suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special])
+
+        if predicted_class == 1 and is_https and suspicious_signals >= 2:
+            st.warning("⚠️ SUSPICIOUS — HTTPS but structure looks unusual. Proceed with caution.")
+            confidence = min(confidence, 70)
+        elif predicted_class == 0:
+            st.error("⚠️ PHISHING — This URL appears to be malicious!")
         else:
-            st.success(f"✅ LEGITIMATE — This URL appears to be safe.")
-        
+            st.success("✅ LEGITIMATE — This URL appears to be safe.")
+
         st.write(f"Confidence: {confidence:.1f}%")
-        
-        # Show feature breakdown
+
         st.markdown("**URL Analysis:**")
         col1, col2 = st.columns(2)
         col1.metric("URL Length", len(url_input))
-        col1.metric("Is HTTPS", "Yes ✅" if url_input.startswith("https") else "No ⚠️")
-        col1.metric("Subdomains", url_input.count('.') - 1)
+        col1.metric("Is HTTPS", "Yes ✅" if is_https else "No ⚠️")
+        col1.metric("Subdomains", url_input.count(".") - 1)
         col2.metric("Special Chars", len([c for c in url_input if not c.isalnum()]))
-        col2.metric("Has IP Address", "Yes ⚠️" if re.match(r'.*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*', url_input) else "No ✅")
-        col2.metric("Query Params", url_input.count('&') + url_input.count('?'))
+        col2.metric("Has IP Address", "Yes ⚠️" if re.match(r".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*", url_input) else "No ✅")
+        col2.metric("Hyphenated Domain", "Yes ⚠️" if has_hyphen_domain else "No ✅")
 
 st.markdown("---")
 st.caption("Phishing Link Classifier — COMP360 Final Project | Uswa, Nawal, Tania")
