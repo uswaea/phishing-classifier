@@ -81,23 +81,23 @@ body::before {
 /* ── pixel title ── */
 .pixel-title {
     font-family: 'Press Start 2P', monospace;
-    font-size: 1.15rem;
+    font-size: 1.45rem;
     color: #cc99ff;
-    text-shadow: 3px 3px 0px #440066, 0 0 15px #9944cc55;
-    -webkit-text-stroke: 1px #8833bb;
+    text-shadow: 4px 4px 0px #330055, 0 0 30px #aa55ff33;
+    -webkit-text-stroke: 1px #9944cc;
     text-align: center;
-    letter-spacing: 2px;
-    margin-bottom: 0.2rem;
-    line-height: 1.8;
+    letter-spacing: 3px;
+    margin-bottom: 0.5rem;
+    line-height: 2;
 }
 
 .pixel-subtitle {
     font-family: 'VT323', monospace;
-    font-size: 1.25rem;
-    color: #667788;
+    font-size: 1.35rem;
+    color: #556677;
     text-align: center;
-    letter-spacing: 3px;
-    margin-bottom: 2rem;
+    letter-spacing: 4px;
+    margin-bottom: 2.5rem;
 }
 
 /* ── pixel frame / card ── */
@@ -429,16 +429,27 @@ if classify_btn:
 # ── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="pixel-footer">
-    <div style="font-size:1.05rem; color:#7788aa; margin-bottom:0.6rem; letter-spacing:1px;">
+    <div style="
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 1.2rem;
+    ">
+        <div style="flex:1; height:1px; background: linear-gradient(to right, transparent, #2a3d4a);"></div>
+        <span style="font-family:'VT323',monospace; font-size:1rem; color:#2a3d4a; letter-spacing:4px;">✦ END TRANSMISSION ✦</span>
+        <div style="flex:1; height:1px; background: linear-gradient(to left, transparent, #2a3d4a);"></div>
+    </div>
+    <div style="font-size:0.95rem; color:#667788; margin-bottom:0.7rem; letter-spacing:1px;">
         trained on 235k URLs so you don't have to click sus links 🫡
     </div>
-    <div style="font-size:1.05rem; margin-bottom:0.4rem; letter-spacing:2px; font-family:'Share Tech Mono', monospace;">
-        built with 🖤 &amp; sleep deprivation by<br>
-        <span style="color:#c9a0ff; font-weight:bold; font-size:1.1rem; letter-spacing:3px;">USWA</span>
-        <span style="color:#445566; margin:0 0.5rem;">·</span>
-        <span style="color:#ff99cc; font-weight:bold; font-size:1.1rem; letter-spacing:3px;">NAWAL</span>
-        <span style="color:#445566; margin:0 0.5rem;">·</span>
-        <span style="color:#ffdd77; font-weight:bold; font-size:1.1rem; letter-spacing:3px;">TANIA</span>
+    <div style="font-family:'Share Tech Mono', monospace; margin-bottom:0.3rem; letter-spacing:2px;">
+        built with 🖤 &amp; sleep deprivation by
+    </div>
+    <div style="font-family:'Share Tech Mono', monospace; margin-bottom:0.2rem;">
+        <span style="color:#c9a0ff; font-weight:bold; font-size:1rem; letter-spacing:4px; display:block; text-align:center; margin-bottom:0.3rem;">USWA</span>
+        <span style="color:#ff99cc; font-weight:bold; font-size:0.95rem; letter-spacing:3px;">NAWAL</span>
+        <span style="color:#334455; margin:0 0.5rem;">·</span>
+        <span style="color:#ffdd77; font-weight:bold; font-size:0.95rem; letter-spacing:3px;">TANIA</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
