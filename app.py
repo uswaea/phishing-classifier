@@ -339,92 +339,100 @@ if classify_btn:
     if not url_input.strip():
         st.markdown('<div class="result-suspicious">⚠ PLEASE ENTER A URL FIRST</div>', unsafe_allow_html=True)
     else:
-        features = extract_features(url_input)
-        features_scaled = scaler.transform(features)
-        probability = model.predict_proba(features_scaled)[0]
-        confidence = max(probability) * 100
-        predicted_class = model.predict(features_scaled)[0]
-
-        is_https = url_input.startswith("https")
-        has_hyphen_domain = "-" in urlparse(url_input).netloc
-        high_subdomains = url_input.count(".") >= 3
-        many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) >= 3
-        has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank"])
-        has_ip = bool(re.match(r".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*", url_input))
-
-        suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special, has_brand_impersonation])
-
-        if predicted_class == 1 and suspicious_signals >= 2:
-            verdict = "suspicious"
-            confidence = min(confidence, 65)
-            st.markdown('<div class="result-suspicious">⚠ SUSPICIOUS DETECTED<br>STRUCTURE LOOKS UNUSUAL<br>PROCEED WITH CAUTION</div>', unsafe_allow_html=True)
-        elif predicted_class == 0:
-            verdict = "phishing"
-            st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>THIS URL IS MALICIOUS<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
+        # Auto-prepend https:// if missing
+        url_input = url_input.strip()
+        if not url_input.startswith("http://") and not url_input.startswith("https://"):
+            url_input = "https://" + url_input
+        # Validate it looks like a real URL after prepending
+        if not re.match(r'^https?://[^\s/$.?#].[^\s]*$', url_input):
+            st.markdown('<div class="result-suspicious">⚠ INVALID INPUT<br>PLEASE ENTER A VALID URL<br>e.g. google.com or https://example.com</div>', unsafe_allow_html=True)
         else:
-            verdict = "safe"
-            st.markdown('<div class="result-safe">✓ LEGITIMATE URL<br>NO THREATS DETECTED<br>SAFE TO PROCEED</div>', unsafe_allow_html=True)
+            features = extract_features(url_input)
+            features_scaled = scaler.transform(features)
+            probability = model.predict_proba(features_scaled)[0]
+            confidence = max(probability) * 100
+            predicted_class = model.predict(features_scaled)[0]
 
-        # Confidence bar
-        st.markdown(f"""
-        <div style="margin-top:1.2rem;">
-            <div class="conf-label">CONFIDENCE: {confidence:.1f}%</div>
-            <div class="conf-bar-wrap">
-                <div class="conf-bar-fill" style="width:{confidence}%;"></div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+            is_https = url_input.startswith("https")
+            has_hyphen_domain = "-" in urlparse(url_input).netloc
+            high_subdomains = url_input.count(".") >= 3
+            many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) >= 3
+            has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank"])
+            has_ip = bool(re.match(r".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*", url_input))
 
-        # Stat grid
-        def sv(val, good_val=None, bad_val=None):
-            if good_val is not None and val == good_val:
-                return "safe"
-            if bad_val is not None and val == bad_val:
-                return "danger"
-            return "warn"
+            suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special, has_brand_impersonation])
 
-        url_len = len(url_input)
-        subdomains = url_input.count(".") - 1
-        special_chars = len([c for c in url_input if not c.isalnum()])
+            if predicted_class == 1 and suspicious_signals >= 2:
+                verdict = "suspicious"
+                confidence = min(confidence, 65)
+                st.markdown('<div class="result-suspicious">⚠ SUSPICIOUS DETECTED<br>STRUCTURE LOOKS UNUSUAL<br>PROCEED WITH CAUTION</div>', unsafe_allow_html=True)
+            elif predicted_class == 0:
+                verdict = "phishing"
+                st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>THIS URL IS MALICIOUS<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
+            else:
+                verdict = "safe"
+                st.markdown('<div class="result-safe">✓ LEGITIMATE URL<br>NO THREATS DETECTED<br>SAFE TO PROCEED</div>', unsafe_allow_html=True)
 
-        https_cls = "safe" if is_https else "danger"
-        hyph_cls = "danger" if has_hyphen_domain else "safe"
-        ip_cls = "danger" if has_ip else "safe"
-        len_cls = "danger" if url_len > 75 else "safe"
-        sub_cls = "danger" if subdomains > 2 else ("warn" if subdomains > 1 else "safe")
-        sp_cls = "danger" if special_chars > 8 else ("warn" if special_chars > 4 else "safe")
-
-        st.markdown(f"""
-        <div style="margin-top:1rem;">
-            <div class="section-label">&gt;&gt; URL ANALYSIS</div>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <span class="stat-label">URL LENGTH</span>
-                    <span class="stat-value {len_cls}">{url_len}</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">IS HTTPS</span>
-                    <span class="stat-value {https_cls}">{"YES ✓" if is_https else "NO ✗"}</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">SUBDOMAINS</span>
-                    <span class="stat-value {sub_cls}">{subdomains}</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">SPECIAL CHARS</span>
-                    <span class="stat-value {sp_cls}">{special_chars}</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">IP ADDRESS</span>
-                    <span class="stat-value {ip_cls}">{"YES ✗" if has_ip else "NO ✓"}</span>
-                </div>
-                <div class="stat-box">
-                    <span class="stat-label">HYPHEN DOMAIN</span>
-                    <span class="stat-value {hyph_cls}">{"YES ✗" if has_hyphen_domain else "NO ✓"}</span>
+            # Confidence bar
+            st.markdown(f"""
+            <div style="margin-top:1.2rem;">
+                <div class="conf-label">CONFIDENCE: {confidence:.1f}%</div>
+                <div class="conf-bar-wrap">
+                    <div class="conf-bar-fill" style="width:{confidence}%;"></div>
                 </div>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
+
+            # Stat grid
+            def sv(val, good_val=None, bad_val=None):
+                if good_val is not None and val == good_val:
+                    return "safe"
+                if bad_val is not None and val == bad_val:
+                    return "danger"
+                return "warn"
+
+            url_len = len(url_input)
+            subdomains = url_input.count(".") - 1
+            special_chars = len([c for c in url_input if not c.isalnum()])
+
+            https_cls = "safe" if is_https else "danger"
+            hyph_cls = "danger" if has_hyphen_domain else "safe"
+            ip_cls = "danger" if has_ip else "safe"
+            len_cls = "danger" if url_len > 75 else "safe"
+            sub_cls = "danger" if subdomains > 2 else ("warn" if subdomains > 1 else "safe")
+            sp_cls = "danger" if special_chars > 8 else ("warn" if special_chars > 4 else "safe")
+
+            st.markdown(f"""
+            <div style="margin-top:1rem;">
+                <div class="section-label">&gt;&gt; URL ANALYSIS</div>
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <span class="stat-label">URL LENGTH</span>
+                        <span class="stat-value {len_cls}">{url_len}</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">IS HTTPS</span>
+                        <span class="stat-value {https_cls}">{"YES ✓" if is_https else "NO ✗"}</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">SUBDOMAINS</span>
+                        <span class="stat-value {sub_cls}">{subdomains}</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">SPECIAL CHARS</span>
+                        <span class="stat-value {sp_cls}">{special_chars}</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">IP ADDRESS</span>
+                        <span class="stat-value {ip_cls}">{"YES ✗" if has_ip else "NO ✓"}</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">HYPHEN DOMAIN</span>
+                        <span class="stat-value {hyph_cls}">{"YES ✗" if has_hyphen_domain else "NO ✓"}</span>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
 # ── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("""
