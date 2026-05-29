@@ -110,26 +110,16 @@ body::before {
     position: relative;
 }
 
-.pixel-card::before {
-    content: "┌──────────────────────────────┐";
-    font-family: 'VT323', monospace;
-    font-size: 0.85rem;
-    color: #00ffcc44;
-    position: absolute;
-    top: -1px; left: 8px;
-}
-
 /* ── result boxes ── */
 .result-phishing {
     background: #1a0505;
     border: 3px solid #ff3355;
     box-shadow: 4px 4px 0px #550011, 0 0 20px #ff335544;
     padding: 1.2rem 1.5rem;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.7rem;
-    color: #ff3355;
-    text-shadow: 0 0 8px #ff335599;
-    line-height: 2;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: #ff6677;
+    line-height: 1.9;
     animation: blink-border 1s step-end infinite;
 }
 
@@ -138,11 +128,10 @@ body::before {
     border: 3px solid #ffcc00;
     box-shadow: 4px 4px 0px #554400, 0 0 20px #ffcc0044;
     padding: 1.2rem 1.5rem;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.7rem;
-    color: #ffcc00;
-    text-shadow: 0 0 8px #ffcc0099;
-    line-height: 2;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: #ffdd55;
+    line-height: 1.9;
 }
 
 .result-safe {
@@ -150,11 +139,10 @@ body::before {
     border: 3px solid #00ff88;
     box-shadow: 4px 4px 0px #004422, 0 0 20px #00ff8844;
     padding: 1.2rem 1.5rem;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.7rem;
-    color: #00ff88;
-    text-shadow: 0 0 8px #00ff8899;
-    line-height: 2;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    color: #44ffaa;
+    line-height: 1.9;
 }
 
 @keyframes blink-border {
@@ -215,23 +203,24 @@ body::before {
 
 .stat-label {
     font-family: 'VT323', monospace;
-    font-size: 0.85rem;
-    color: #556677;
+    font-size: 1.05rem;
+    color: #8899aa;
     display: block;
-    margin-bottom: 2px;
+    margin-bottom: 6px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .stat-value {
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.65rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    font-weight: bold;
     color: #00ffcc;
 }
 
-.stat-value.warn { color: #ffcc00; }
-.stat-value.safe { color: #00ff88; }
-.stat-value.danger { color: #ff3355; }
+.stat-value.warn { color: #ffdd44; }
+.stat-value.safe { color: #44ffaa; }
+.stat-value.danger { color: #ff5577; }
 
 /* ── section label ── */
 .section-label {
@@ -303,13 +292,14 @@ body::before {
 /* ── footer ── */
 .pixel-footer {
     font-family: 'VT323', monospace;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #334455;
     text-align: center;
     letter-spacing: 2px;
     margin-top: 2rem;
     padding-top: 1rem;
     border-top: 1px solid #112233;
+    line-height: 1.8;
 }
 
 /* ── hide streamlit metric delta ── */
@@ -430,7 +420,20 @@ if classify_btn:
 # ── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="pixel-footer">
-    ◄ COMP360 FINAL PROJECT · USWA · NAWAL · TANIA ►<br>
-    <span style="font-size:0.8rem; color:#223344;">FORMAN CHRISTIAN COLLEGE UNIVERSITY · 2026</span>
+    <div style="font-size:1.3rem; margin-bottom:0.4rem; color:#556677; letter-spacing:2px;">
+        ◄────────────────────────────►
+    </div>
+    <div style="font-size:1.1rem; color:#7788aa; margin-bottom:0.5rem;">
+        trained on 235k URLs so you don't have to click sus links 🫡
+    </div>
+    <div style="font-size:1.2rem; margin-bottom:0.3rem;">
+        built with 🖤 &amp; sleep deprivation by
+        <span style="color:#00ffcc; font-weight:bold;">USWA</span> ·
+        <span style="color:#ff88cc; font-weight:bold;">NAWAL</span> ·
+        <span style="color:#ffcc44; font-weight:bold;">TANIA</span>
+    </div>
+    <div style="font-size:0.95rem; color:#334455; margin-top:0.3rem; letter-spacing:2px;">
+        COMP360 · FCCU · 2026
+    </div>
 </div>
 """, unsafe_allow_html=True)
