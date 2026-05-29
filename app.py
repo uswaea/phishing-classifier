@@ -345,7 +345,9 @@ if classify_btn:
             url_input = "https://" + url_input
         # Validate it looks like a real URL after prepending
         parsed_check = urlparse(url_input)
-        if not re.match(r'^https?://[^\s/$.?#].[^\s]*$', url_input) or '.' not in parsed_check.netloc:
+        netloc = parsed_check.netloc
+        tld_valid = re.match(r'^[^.]+\.[a-zA-Z]{2,}', netloc)
+        if not tld_valid or not re.match(r'^https?://[^\s/$.?#].[^\s]*$', url_input):
             st.markdown('<div class="result-suspicious">⚠ INVALID INPUT<br>PLEASE ENTER A VALID URL<br>e.g. google.com or https://example.com</div>', unsafe_allow_html=True)
         else:
             features = extract_features(url_input)
