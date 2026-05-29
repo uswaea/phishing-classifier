@@ -362,25 +362,20 @@ if classify_btn:
             many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) >= 3
             has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank"])
             has_ip = bool(re.match(r".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*", url_input))
-            url_too_long = len(url_input) > 50
-            url_way_too_long = len(url_input) > 75
+            url_too_long = len(url_input) > 75
+            url_way_too_long = len(url_input) > 150
 
             suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special, has_brand_impersonation])
 
-            if url_way_too_long and predicted_class != 0:
+            if url_way_too_long:
                 st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>URL IS ABNORMALLY LONG<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
-            elif url_too_long and predicted_class == 1 and suspicious_signals < 1:
+            elif url_too_long or (predicted_class == 1 and suspicious_signals >= 2):
                 verdict = "suspicious"
                 confidence = min(confidence, 65)
                 st.markdown('<div class="result-suspicious">⚠ SUSPICIOUS DETECTED<br>STRUCTURE LOOKS UNUSUAL<br>PROCEED WITH CAUTION</div>', unsafe_allow_html=True)
-            elif predicted_class == 0 or (predicted_class == 1 and suspicious_signals >= 1):
-                if predicted_class == 0:
-                    verdict = "phishing"
-                    st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>THIS URL IS MALICIOUS<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
-                else:
-                    verdict = "suspicious"
-                    confidence = min(confidence, 65)
-                    st.markdown('<div class="result-suspicious">⚠ SUSPICIOUS DETECTED<br>STRUCTURE LOOKS UNUSUAL<br>PROCEED WITH CAUTION</div>', unsafe_allow_html=True)
+            elif predicted_class == 0:
+                verdict = "phishing"
+                st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>THIS URL IS MALICIOUS<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
             else:
                 verdict = "safe"
                 st.markdown('<div class="result-safe">✓ LEGITIMATE URL<br>NO THREATS DETECTED<br>SAFE TO PROCEED</div>', unsafe_allow_html=True)
