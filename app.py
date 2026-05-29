@@ -134,7 +134,11 @@ if classify_btn:
             has_hyphen_domain = "-" in urlparse(url_input).netloc
             high_subdomains = url_input.count(".") >= 3
             many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) >= 3
-            has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank", "ebay", "instagram", "facebook", "twitter", "whatsapp", "binance", "coinbase"])
+            # Only flag brand impersonation if it's NOT the official domain
+            trusted_domains = ["google.com", "youtube.com", "amazon.com", "paypal.com", "microsoft.com", "apple.com", "netflix.com", "facebook.com", "instagram.com", "twitter.com", "whatsapp.com", "ebay.com", "binance.com", "coinbase.com", "github.com", "wikipedia.org"]
+            clean_netloc = urlparse(url_input).netloc.lower().replace("www.", "")
+            is_trusted = any(clean_netloc == td or clean_netloc.endswith("." + td) for td in trusted_domains)
+            has_brand_impersonation = (not is_trusted) and any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank", "ebay", "instagram", "facebook", "twitter", "whatsapp", "binance", "coinbase"])
             has_ip = bool(re.match(r".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*", url_input))
             url_too_long = len(url_input) > 75
             url_way_too_long = len(url_input) > 150
