@@ -369,11 +369,11 @@ if classify_btn:
 
             if url_way_too_long and predicted_class != 0:
                 st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>URL IS ABNORMALLY LONG<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
-            elif url_too_long and predicted_class == 1 and suspicious_signals < 2:
+            elif url_too_long and predicted_class == 1 and suspicious_signals < 1:
                 verdict = "suspicious"
                 confidence = min(confidence, 65)
                 st.markdown('<div class="result-suspicious">⚠ SUSPICIOUS DETECTED<br>STRUCTURE LOOKS UNUSUAL<br>PROCEED WITH CAUTION</div>', unsafe_allow_html=True)
-            elif predicted_class == 0 or (predicted_class == 1 and suspicious_signals >= 2):
+            elif predicted_class == 0 or (predicted_class == 1 and suspicious_signals >= 1):
                 if predicted_class == 0:
                     verdict = "phishing"
                     st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>THIS URL IS MALICIOUS<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
