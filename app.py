@@ -324,11 +324,9 @@ st.markdown('<div class="pixel-title">🔐 PHISHING URL CLASSIFIER</div>', unsaf
 st.markdown('<div class="pixel-subtitle">stay safe out there. don\'t click random links. 🛡️</div>', unsafe_allow_html=True)
 
 # ── INPUT CARD ───────────────────────────────────────────────────────────────
-st.markdown('<div class="pixel-card">', unsafe_allow_html=True)
 st.markdown('<div class="section-label">&gt;&gt; ENTER TARGET URL</div>', unsafe_allow_html=True)
 url_input = st.text_input("", placeholder="https://example.com", label_visibility="collapsed")
 classify_btn = st.button("[ SCAN URL ]")
-st.markdown('</div>', unsafe_allow_html=True)
 
 # ── CLASSIFICATION ───────────────────────────────────────────────────────────
 if classify_btn:
@@ -431,13 +429,13 @@ st.markdown("""
     <div style="font-size:1.15rem; color:#7788aa; margin-bottom:0.6rem; letter-spacing:1px;">
         trained on 235k URLs so you don't have to click sus links 🫡
     </div>
-    <div style="font-size:1.3rem; margin-bottom:0.4rem; letter-spacing:2px;">
+    <div style="font-size:1.3rem; margin-bottom:0.4rem; letter-spacing:2px; font-family:'Share Tech Mono', monospace;">
         built with 🖤 &amp; sleep deprivation by<br>
-        <span style="color:#cc99ff; font-weight:bold; -webkit-text-stroke:1px #7722aa; font-size:1.4rem;">USWA</span>
-        <span style="color:#556677; margin:0 0.4rem;">·</span>
-        <span style="color:#ff99cc; font-weight:bold; -webkit-text-stroke:1px #880044; font-size:1.4rem;">NAWAL</span>
-        <span style="color:#556677; margin:0 0.4rem;">·</span>
-        <span style="color:#ffdd55; font-weight:bold; -webkit-text-stroke:1px #886600; font-size:1.4rem;">TANIA</span>
+        <span style="color:#d4aaff; font-weight:bold; font-size:1.5rem; letter-spacing:3px;">USWA</span>
+        <span style="color:#445566; margin:0 0.6rem; font-size:1.2rem;">·</span>
+        <span style="color:#ff99cc; font-weight:bold; font-size:1.5rem; letter-spacing:3px;">NAWAL</span>
+        <span style="color:#445566; margin:0 0.6rem; font-size:1.2rem;">·</span>
+        <span style="color:#ffdd77; font-weight:bold; font-size:1.5rem; letter-spacing:3px;">TANIA</span>
     </div>
 
 </div>
