@@ -134,16 +134,17 @@ if classify_btn:
             has_hyphen_domain = "-" in urlparse(url_input).netloc
             high_subdomains = url_input.count(".") >= 3
             many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) >= 3
-            has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank"])
+            has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank", "ebay", "instagram", "facebook", "twitter", "whatsapp", "binance", "coinbase"])
             has_ip = bool(re.match(r".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*", url_input))
             url_too_long = len(url_input) > 75
             url_way_too_long = len(url_input) > 150
 
             suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special, has_brand_impersonation])
+            is_clearly_phishing = (has_brand_impersonation and not is_https) or (has_brand_impersonation and has_hyphen_domain) or has_ip
 
             if url_way_too_long and predicted_class != 0:
                 st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>URL IS ABNORMALLY LONG<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
-            elif predicted_class == 0:
+            elif predicted_class == 0 or is_clearly_phishing:
                 st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>THIS URL IS MALICIOUS<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
             elif url_too_long or suspicious_signals >= 1:
                 confidence = min(confidence, 65)
