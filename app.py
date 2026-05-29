@@ -428,28 +428,50 @@ if classify_btn:
 
 # ── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("""
-<div class="pixel-footer">
+<div style="margin-top: 3rem;">
     <div style="
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 1.2rem;
+        border: 1px solid #1a2e3a;
+        background: #070710;
+        padding: 1.2rem 1.5rem;
+        font-family: 'Share Tech Mono', monospace;
+        position: relative;
+        box-shadow: 0 0 30px #0a1520;
     ">
-        <div style="flex:1; height:1px; background: linear-gradient(to right, transparent, #2a3d4a);"></div>
-        <span style="font-family:'VT323',monospace; font-size:1rem; color:#2a3d4a; letter-spacing:4px;">✦ END TRANSMISSION ✦</span>
-        <div style="flex:1; height:1px; background: linear-gradient(to left, transparent, #2a3d4a);"></div>
-    </div>
-    <div style="font-size:0.95rem; color:#667788; margin-bottom:0.7rem; letter-spacing:1px;">
-        trained on 235k URLs so you don't have to click sus links 🫡
-    </div>
-    <div style="font-family:'Share Tech Mono', monospace; margin-bottom:0.3rem; letter-spacing:2px;">
-        built with 🖤 &amp; sleep deprivation by
-    </div>
-    <div style="font-family:'Share Tech Mono', monospace; margin-bottom:0.2rem;">
-        <span style="color:#c9a0ff; font-weight:bold; font-size:1rem; letter-spacing:4px; display:block; text-align:center; margin-bottom:0.3rem;">USWA</span>
-        <span style="color:#ff99cc; font-weight:bold; font-size:0.95rem; letter-spacing:3px;">NAWAL</span>
-        <span style="color:#334455; margin:0 0.5rem;">·</span>
-        <span style="color:#ffdd77; font-weight:bold; font-size:0.95rem; letter-spacing:3px;">TANIA</span>
+        <div style="
+            position: absolute;
+            top: -0.6rem;
+            left: 1rem;
+            background: #070710;
+            padding: 0 0.5rem;
+            font-size: 0.7rem;
+            color: #2a4455;
+            letter-spacing: 3px;
+        ">SYSTEM LOG</div>
+
+        <div style="font-size: 0.85rem; color: #4a6677; letter-spacing: 2px; margin-bottom: 0.5rem;">
+            &gt; MODEL_STATUS: <span style="color:#667f8f;">ACTIVE</span>
+        </div>
+        <div style="font-size: 0.85rem; color: #4a6677; letter-spacing: 2px; margin-bottom: 0.5rem;">
+            &gt; TRAINING_DATA: <span style="color:#667f8f;">235,795 URLs · PHIUSIIL DATASET</span>
+        </div>
+        <div style="font-size: 0.85rem; color: #4a6677; letter-spacing: 2px; margin-bottom: 0.5rem;">
+            &gt; NOTE: <span style="color:#667f8f;">trained so you don't have to click sus links 🫡</span>
+        </div>
+        <div style="
+            border-top: 1px solid #1a2e3a;
+            margin-top: 0.9rem;
+            padding-top: 0.9rem;
+            font-size: 0.85rem;
+            color: #4a6677;
+            letter-spacing: 2px;
+        ">
+            &gt; BUILT_BY:
+            <span style="color:#c9a0ff; font-weight:bold; margin-left:0.5rem; letter-spacing:3px;">USWA</span>
+            <span style="color:#2a3d4a; margin: 0 0.4rem;">·</span>
+            <span style="color:#ff99cc; font-weight:bold; letter-spacing:3px;">NAWAL</span>
+            <span style="color:#2a3d4a; margin: 0 0.4rem;">·</span>
+            <span style="color:#ffdd77; font-weight:bold; letter-spacing:3px;">TANIA</span>
+        </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
