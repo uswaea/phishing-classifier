@@ -307,7 +307,14 @@ body::before {
     line-height: 1.8;
 }
 
-/* ── hide streamlit metric delta ── */
+/* ── mobile responsive ── */
+@media (max-width: 600px) {
+    .pixel-title { font-size: 0.75rem !important; }
+    .pixel-subtitle { font-size: 1rem !important; }
+    .stat-grid { grid-template-columns: 1fr 1fr !important; }
+    .result-phishing, .result-suspicious, .result-safe { font-size: 0.85rem !important; }
+    .block-container { padding-left: 1rem !important; padding-right: 1rem !important; }
+}
 [data-testid="stMetricDelta"] { display: none; }
 [data-testid="stMetric"] {
     background: #080814;
@@ -319,7 +326,6 @@ body::before {
 
 
 # ── HEADER ───────────────────────────────────────────────────────────────────
-st.markdown('<div class="corner-deco"><span>◤</span><span>◥</span></div>', unsafe_allow_html=True)
 st.markdown('<div class="pixel-title">🔐 PHISHING URL CLASSIFIER</div>', unsafe_allow_html=True)
 st.markdown('<div class="pixel-subtitle">stay safe out there. don\'t click random links. 🛡️</div>', unsafe_allow_html=True)
 
@@ -423,20 +429,16 @@ if classify_btn:
 # ── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="pixel-footer">
-    <div style="font-size:1.3rem; margin-bottom:0.4rem; color:#334455; letter-spacing:2px;">
-        ◄────────────────────────────►
-    </div>
-    <div style="font-size:1.15rem; color:#7788aa; margin-bottom:0.6rem; letter-spacing:1px;">
+    <div style="font-size:1.05rem; color:#7788aa; margin-bottom:0.6rem; letter-spacing:1px;">
         trained on 235k URLs so you don't have to click sus links 🫡
     </div>
-    <div style="font-size:1.3rem; margin-bottom:0.4rem; letter-spacing:2px; font-family:'Share Tech Mono', monospace;">
+    <div style="font-size:1.05rem; margin-bottom:0.4rem; letter-spacing:2px; font-family:'Share Tech Mono', monospace;">
         built with 🖤 &amp; sleep deprivation by<br>
-        <span style="color:#d4aaff; font-weight:bold; font-size:1.5rem; letter-spacing:3px;">USWA</span>
-        <span style="color:#445566; margin:0 0.6rem; font-size:1.2rem;">·</span>
-        <span style="color:#ff99cc; font-weight:bold; font-size:1.5rem; letter-spacing:3px;">NAWAL</span>
-        <span style="color:#445566; margin:0 0.6rem; font-size:1.2rem;">·</span>
-        <span style="color:#ffdd77; font-weight:bold; font-size:1.5rem; letter-spacing:3px;">TANIA</span>
+        <span style="color:#c9a0ff; font-weight:bold; font-size:1.1rem; letter-spacing:3px;">USWA</span>
+        <span style="color:#445566; margin:0 0.5rem;">·</span>
+        <span style="color:#ff99cc; font-weight:bold; font-size:1.1rem; letter-spacing:3px;">NAWAL</span>
+        <span style="color:#445566; margin:0 0.5rem;">·</span>
+        <span style="color:#ffdd77; font-weight:bold; font-size:1.1rem; letter-spacing:3px;">TANIA</span>
     </div>
-
 </div>
 """, unsafe_allow_html=True)
