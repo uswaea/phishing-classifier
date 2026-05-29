@@ -82,8 +82,9 @@ body::before {
 .pixel-title {
     font-family: 'Press Start 2P', monospace;
     font-size: 1.15rem;
-    color: #00ffcc;
-    text-shadow: 0 0 10px #00ffcc88, 3px 3px 0px #005544;
+    color: #cc99ff;
+    text-shadow: 3px 3px 0px #440066, 0 0 15px #9944cc55;
+    -webkit-text-stroke: 1px #8833bb;
     text-align: center;
     letter-spacing: 2px;
     margin-bottom: 0.2rem;
@@ -92,8 +93,8 @@ body::before {
 
 .pixel-subtitle {
     font-family: 'VT323', monospace;
-    font-size: 1.3rem;
-    color: #7788aa;
+    font-size: 1.25rem;
+    color: #667788;
     text-align: center;
     letter-spacing: 3px;
     margin-bottom: 2rem;
@@ -232,6 +233,10 @@ body::before {
     margin-bottom: 0.5rem;
 }
 
+/* ── hide empty input label box ── */
+.stTextInput > label {display: none !important;}
+.stTextInput > div {margin-top: 0 !important;}
+
 /* ── input override ── */
 .stTextInput > div > div > input {
     background: #080814 !important;
@@ -316,7 +321,7 @@ body::before {
 # ── HEADER ───────────────────────────────────────────────────────────────────
 st.markdown('<div class="corner-deco"><span>◤</span><span>◥</span></div>', unsafe_allow_html=True)
 st.markdown('<div class="pixel-title">🔐 PHISHING URL CLASSIFIER</div>', unsafe_allow_html=True)
-st.markdown('<div class="pixel-subtitle">[ COMP360 · AI SECURITY SCANNER v1.0 ]</div>', unsafe_allow_html=True)
+st.markdown('<div class="pixel-subtitle">stay safe out there. don\'t click random links. 🛡️</div>', unsafe_allow_html=True)
 
 # ── INPUT CARD ───────────────────────────────────────────────────────────────
 st.markdown('<div class="pixel-card">', unsafe_allow_html=True)
@@ -420,20 +425,20 @@ if classify_btn:
 # ── FOOTER ───────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="pixel-footer">
-    <div style="font-size:1.3rem; margin-bottom:0.4rem; color:#556677; letter-spacing:2px;">
+    <div style="font-size:1.3rem; margin-bottom:0.4rem; color:#334455; letter-spacing:2px;">
         ◄────────────────────────────►
     </div>
-    <div style="font-size:1.1rem; color:#7788aa; margin-bottom:0.5rem;">
+    <div style="font-size:1.15rem; color:#7788aa; margin-bottom:0.6rem; letter-spacing:1px;">
         trained on 235k URLs so you don't have to click sus links 🫡
     </div>
-    <div style="font-size:1.2rem; margin-bottom:0.3rem;">
-        built with 🖤 &amp; sleep deprivation by
-        <span style="color:#00ffcc; font-weight:bold;">USWA</span> ·
-        <span style="color:#ff88cc; font-weight:bold;">NAWAL</span> ·
-        <span style="color:#ffcc44; font-weight:bold;">TANIA</span>
+    <div style="font-size:1.3rem; margin-bottom:0.4rem; letter-spacing:2px;">
+        built with 🖤 &amp; sleep deprivation by<br>
+        <span style="color:#cc99ff; font-weight:bold; -webkit-text-stroke:1px #7722aa; font-size:1.4rem;">USWA</span>
+        <span style="color:#556677; margin:0 0.4rem;">·</span>
+        <span style="color:#ff99cc; font-weight:bold; -webkit-text-stroke:1px #880044; font-size:1.4rem;">NAWAL</span>
+        <span style="color:#556677; margin:0 0.4rem;">·</span>
+        <span style="color:#ffdd55; font-weight:bold; -webkit-text-stroke:1px #886600; font-size:1.4rem;">TANIA</span>
     </div>
-    <div style="font-size:0.95rem; color:#334455; margin-top:0.3rem; letter-spacing:2px;">
-        COMP360 · FCCU · 2026
-    </div>
+
 </div>
 """, unsafe_allow_html=True)
