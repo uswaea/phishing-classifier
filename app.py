@@ -362,8 +362,8 @@ if classify_btn:
             many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) >= 3
             has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank"])
             has_ip = bool(re.match(r".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*", url_input))
-            url_too_long = len(url_input) > 75
-            url_way_too_long = len(url_input) > 150
+            url_too_long = len(url_input) > 50
+            url_way_too_long = len(url_input) > 75
 
             suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special, has_brand_impersonation])
 
