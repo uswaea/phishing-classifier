@@ -362,10 +362,14 @@ if classify_btn:
             many_special = len([c for c in url_input if not c.isalnum() and c not in [".", "/", ":", "-"]]) >= 3
             has_brand_impersonation = any(brand in url_input.lower() for brand in ["paypal", "amazon", "google", "netflix", "microsoft", "apple", "bank"])
             has_ip = bool(re.match(r".*\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}.*", url_input))
+            url_too_long = len(url_input) > 75
+            url_way_too_long = len(url_input) > 150
 
             suspicious_signals = sum([has_hyphen_domain, high_subdomains, many_special, has_brand_impersonation])
 
-            if predicted_class == 1 and suspicious_signals >= 2:
+            if url_way_too_long:
+                st.markdown('<div class="result-phishing">☠ PHISHING DETECTED<br>URL IS ABNORMALLY LONG<br>DO NOT PROCEED</div>', unsafe_allow_html=True)
+            elif url_too_long or (predicted_class == 1 and suspicious_signals >= 2):
                 verdict = "suspicious"
                 confidence = min(confidence, 65)
                 st.markdown('<div class="result-suspicious">⚠ SUSPICIOUS DETECTED<br>STRUCTURE LOOKS UNUSUAL<br>PROCEED WITH CAUTION</div>', unsafe_allow_html=True)
